@@ -1,0 +1,43 @@
+{
+    "name": "rds/jrf",
+    "description": "JSON-RPC 2.0 Framework",
+    "license": "MIT",
+    "keywords": ["json-rpc", "microframework"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Nikolay Balakirev",
+            "email": "n.balakirev@rambler-co.ru"
+        },
+        {
+            "name": "Aleksey Laletin",
+            "email": "aleksey.laletin@rambler-co.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "~5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "jrf\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "vendor/bin/phpunit"
+        ],
+        "post-install-cmd": [
+            "vendor/bin/phpunit"
+        ],
+        "make-test": "vendor/bin/phpunit"
+    }
+}
