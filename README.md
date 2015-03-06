@@ -16,8 +16,7 @@ Outside of the box, you can create a powerful controller-based application servi
 Usage example
 =============
 
-```
-<?php
+```php
 
 use \jrf\JRF;
 $service = new JRF();
@@ -46,8 +45,7 @@ Overriding input interface
 
 If php://input is a bad way for you, you can create your own input:
 
-```
-<?php
+```php
 
 use jrf\http\Input;
 
@@ -69,8 +67,7 @@ class MyInput extends Input
 
 And override default like this:
 
-```
-<?php
+```php
 
 // ..... service init
 use MyInput;
@@ -87,8 +84,7 @@ Create access middleware
 In "captain obvious" opinion, all available private service must have access provisioning module.
 Let's code-in it:
 
-```
-<?php
+```php
 
 use \jrf\middleware\Base;
 use \jrf\fault\ServerError;
@@ -116,8 +112,7 @@ class AccessMiddleware extends Base
 
 Let's add our middleware into service:
 
-```
-<?php
+```php
 
 // ... service init
 use AccessMiddleware;
@@ -132,8 +127,7 @@ Create custom controller factory
 
 Simple and easy way to create factory - use namespace-based action provider.
 
-```
-<?php
+```php
 
 use jrf\controller\Base;
 use jrf\fault\MethodNotFound;
@@ -173,8 +167,7 @@ class MyControllerFactory extends Base
 
 Implementation:
 
-```
-<?php
+```php
 
 // .... service init
 use MyControllerFactory;
@@ -210,8 +203,7 @@ Rules:
 
 Implementation
 
-```
-<?php
+```php
 
 use jrf\json\Schema;
 
@@ -238,8 +230,7 @@ Configuration container
 Configuration Container instantiated Inside JRF constructor method with options passed inside it. To access container
 JRF provide method named "config", config access examples:
 
-```
-<?php
+```php
 
 use jrf\JRF;
 
@@ -264,61 +255,35 @@ $val = $service->config()->{'app.debug'};
 $val = $service->config()['app.debug'];
 ```
 
-Advanced client usage
+Client usage
 ---------------------
 
-First - need to extend base client class.
+```php 
+$client = new Client("http://json-rpc.server/");
 
-```
-<?php
+$pipe = $client->createPipe();
 
-use \jrf\Client;
-class MyClient extends Client {}
+$batch = $client->createBatch();
+$m1_id = $batch->append($client->method('m1', [1,2,3]));
+$m2_id = $batch->append($client->method('m2'));
+$m3_id = $batch->append($client->method('m3'));
 
-```
+$pipe->add('batch', $batch);
+$pipe->add('news', $client->method('news.search', ['limit'=>50]));
+$pipe->add('users', $client->method('users.all', ['limit'=>10]));
 
-Now, need to define a Trait, that add a custom method and incapsulate logic inside self:
+$response = $client->executePipe($pipe);
 
-```
-<?php
+$m1 = $response['batch'][$m2_id];
 
-trait Test
-{
-	public function test($a, $b)
-	{
-		return $this->execute('test', ['a'=>$a, 'b'=>$b]);
-	}
-}
-```
-
-Next, - use Test trait inside MyClient:
-
-```
-<?php
-
-use \jrf\Client;
-use Test;
-class MyClient extends Client
-{
-    use Test;
-}
-```
-
-Now, we able to use it like this:
-
-```
-<?php
-
-use MyClient;
-
-$client = new MyClient('http://path/to/service.php');
-$result = $client->test(10, 25);
+var_dump($m1->getResult());
+var_dump($client->getTotalTime());
 ```
 
 Unit Tests
 ----------
 
-```
+```sh
 cd path/to/jrf-root
 php composer.phar update --dev
 vendor/bin/phpunit
@@ -331,8 +296,7 @@ If that really needed, JRF allow to handle custom input interface without any li
 By this way JRF is not provide response output.
 However, if you need to use couple of providers both, you can run service by add **$service->listen()**.
 
-```
-<?php
+```php
 
 // input interface from example
 use MyInput;
