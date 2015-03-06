@@ -1,6 +1,8 @@
 JSON RPC Framework (JRF)
 ========================
 
+[![Build Status](https://travis-ci.org/rambler-digital-solutions/JRF.svg)](https://travis-ci.org/rambler-digital-solutions/JRF)
+
 **JRF** is a **JSON-RPC over HTTP** data providing framework.
 Simple component-based architecture allow you to fast and easy web service developing.
 From the box (as-is) **JRF** supports a controller/action factory, input interface (PhpInput by default),
